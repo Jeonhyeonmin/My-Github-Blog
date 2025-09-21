@@ -5,15 +5,4 @@
       <changefreq>daily</changefreq>
       <priority>1.0</priority>
    </url>
-   <url>
-      <loc>https://jeonhyeonmin.github.io/blog/post1.html</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://jeonhyeonmin.github.io/blog/post2.html</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <!-- 글이 추가될 때마다 <url>...</url> 블록을 추가 -->
 </urlset>
