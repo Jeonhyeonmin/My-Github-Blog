@@ -27,8 +27,6 @@ async function initDataBlogList() {
         blogList = await response.json();
     } else {
         // GitHub 배포 상태
-        // 만약 siteConfig.username이 비어있거나 siteConfig.repositoryName이 비어 있다면 해당 값을 지정하여 시작
-        // config에서 값이 없을 경우 URL에서 추출
         if (!siteConfig.username || !siteConfig.repositoryName) {
             const urlConfig = extractFromUrl();
             siteConfig.username = siteConfig.username || urlConfig.username;
@@ -38,10 +36,15 @@ async function initDataBlogList() {
 
         let response;
 
-        // 배포 상태에서 GitHub API를 사용(이용자가 적을 때)
         if (!localDataUsing) {
+            // 🚨 깃허브 API 호출 (토큰 인증 포함)
             response = await fetch(
-                `https://api.github.com/repos/${siteConfig.username}/${siteConfig.repositoryName}/contents/blog`
+                `https://api.github.com/repos/${siteConfig.username}/${siteConfig.repositoryName}/contents/blog`,
+                {
+                    headers: {
+                        Authorization: "token YOUR_PERSONAL_ACCESS_TOKEN"
+                    }
+                }
             );
         } else {
             // 배포 상태에서 Local data를 사용(이용자가 많을 때)
@@ -49,11 +52,15 @@ async function initDataBlogList() {
                 url.origin + `/${siteConfig.repositoryName}/data/local_blogList.json`
             );
         }
-        // 배포 상태에서 Local data를 사용(이용자가 많을 때)
-        blogList = await response.json();
-    }
 
-    // console.log(blogList);
+        blogList = await response.json();
+
+        // 방어 코드: API 에러 메시지일 경우
+        if (!Array.isArray(blogList)) {
+            console.error("GitHub API Error:", blogList);
+            blogList = []; // 최소한 빈 배열로 초기화
+        }
+    }
 
     // 정규표현식에 맞지 않는 파일은 제외하여 blogList에 재할당
     blogList = blogList.filter((post) => {
@@ -63,11 +70,14 @@ async function initDataBlogList() {
         }
     });
 
+    // 파일명 기준 내림차순 정렬
     blogList.sort(function (a, b) {
         return b.name.localeCompare(a.name);
     });
+
     return blogList;
 }
+
 
 async function initDataBlogMenu() {
     if (blogMenu.length > 0) {
