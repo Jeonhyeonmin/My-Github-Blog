@@ -37,12 +37,11 @@ async function initDataBlogList() {
         let response;
 
         if (!localDataUsing) {
-            // 🚨 깃허브 API 호출 (토큰 인증 포함)
             response = await fetch(
                 `https://api.github.com/repos/${siteConfig.username}/${siteConfig.repositoryName}/contents/blog`,
                 {
                     headers: {
-                        Authorization: "token YOUR_PERSONAL_ACCESS_TOKEN"
+                        Authorization: "$&@(&$@$*^@(@HD*(&DW&$@G$@KID&"
                     }
                 }
             );
