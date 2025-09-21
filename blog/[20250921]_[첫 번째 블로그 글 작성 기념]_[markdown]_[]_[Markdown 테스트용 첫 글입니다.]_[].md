@@ -43,6 +43,7 @@ Python:
 ```python
 for i in range(5):
     print("Hello, Python!")
+```
 
 console.log("Hello, JavaScript!");
 
