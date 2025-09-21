@@ -45,8 +45,14 @@ for i in range(5):
     print("Hello, Python!")
 ```
 
+JavaScript:
+```javaScript
 console.log("Hello, JavaScript!");
+```
 
+HTML:
+```html
 <p>Hello, HTML!</p>
+```
 
 ![alt text](image.png)
