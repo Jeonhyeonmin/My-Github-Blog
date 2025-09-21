@@ -1,14 +1,14 @@
-// scss 색상 변수
-$primary: #2e6ff2;
-$background: #fff;
-$surface: #121314;
-$graylv1: #f3f5fa;
-$graylv2: #d9dbe0;
-$graylv3: #8d9299;
-$graylv4: #47494d;
-$error: #ff3440;
-$lowError: #ffc533;
-$activation: #dee8ff;
+// Haru 테마 색상 변수
+$primary: #a3d8f4;       // 부드러운 하늘색
+$background: #fffefc;    // 따뜻한 화이트
+$surface: #f5f7fa;       // 연한 회색/흰색
+$graylv1: #fdf6f0;       // 가장 연한 회색
+$graylv2: #e6e8eb;       // 연한 회색
+$graylv3: #b0b5bd;       // 중간 회색
+$graylv4: #7d8085;       // 진한 회색
+$error: #ff6b6b;          // 부드러운 빨강
+$lowError: #ffd3b6;       // 연한 오렌지
+$activation: #cde7ff;    // 연한 파랑
 
 @mixin mask-image($mask-image, $color) {
   background-color: $color;
@@ -22,146 +22,48 @@ $activation: #dee8ff;
   mask-position: center center;
 }
 
+// 버튼/아이콘 스타일
+#menu-button, #search-button, .search-inp-btn, .reset-inp-btn, #copy-button, #aside-button,
+#page-prev, #page-next {
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
 #menu-button {
-  width: 1.75rem;
-  height: 1.75rem;
-  display: flex;
-  align-items: center;
-
   @include mask-image("../img/icon/icon-dropdown-menu.svg", $graylv3);
-
-  &:hover,
-  &.active {
-    background-color: $surface;
-  }
+  &:hover, &.active { background-color: $surface; }
 }
 
 #search-button {
-  width: 1.5rem;
-  height: 1.5rem;
-  align-items: center;
-
   @include mask-image("../img/icon/icon-search.svg", $graylv3);
-  &:hover,
-  &.active {
-    background-color: $surface;
-  }
+  &:hover, &.active { background-color: $surface; }
 }
 
 .search-inp-btn {
-  width: 1.3125rem;
-  height: 1.3125rem;
-  display: flex;
-  align-items: center;
-
   @include mask-image("../img/icon/icon-search.svg", $graylv2);
-
-  @media screen and (min-width: 768px) {
-    background-color: $graylv4;
-  }
-  &:hover,
-  &.active {
-    background-color: $graylv4;
-  }
+  @media screen and (min-width: 768px) { background-color: $graylv4; }
+  &:hover, &.active { background-color: $graylv4; }
 }
 
 .reset-inp-btn {
-  width: 1rem;
-  height: 1rem;
-  display: flex;
-  align-items: center;
   background-color: $graylv2;
-  border-radius: 50%;
-
-  &::after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    @include mask-image("../img/icon/icon-X.svg", $graylv1);
-  }
-  &:hover,
-  &.active {
-    background-color: $graylv4;
-  }
+  &::after { @include mask-image("../img/icon/icon-X.svg", $graylv1); }
+  &:hover, &.active { background-color: $graylv4; }
 }
 
 #copy-button {
-  width: 2.625rem;
-  height: 2.625rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover,
-  &.active {
-    &::after {
-      background-color: $surface;
-    }
-  }
-  &::after {
-    content: "";
-    width: 100%;
-    height: 100%;
-    @include mask-image("../img/icon/icon-copy.svg", $graylv3);
-  }
+  &::after { @include mask-image("../img/icon/icon-copy.svg", $graylv3); }
+  &:hover, &.active { &::after { background-color: $surface; } }
 }
 
 #aside-button {
-  margin-left: auto;
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:active,
-  &:focus {
-    outline: none;
-  }
-
-  &::after {
-    content: "";
-    width: 24px;
-    height: 24px;
-    margin: 13px;
-    border: 1px solid red;
-    @include mask-image("../img/icon/icon-chapter.svg", $graylv4);
-  }
+  &::after { @include mask-image("../img/icon/icon-chapter.svg", $graylv4); }
 }
 
-.active #aside-button {
-  &::after {
-    @include mask-image("../img/icon/icon-side-close-right.svg", $graylv3);
-  }
-}
+.active #aside-button &::after { @include mask-image("../img/icon/icon-side-close-right.svg", $graylv3); }
 
-#page-prev {
-  display: flex;
-  &::after {
-    content: "";
-    width: 20px;
-    height: 20px;
-    @include mask-image("../img/icon/icon-prev.svg", $graylv3);
-  }
-  &:hover::after {
-    @include mask-image("../img/icon/icon-prev.svg", $graylv4);
-  }
-  &:disabled::after {
-    @include mask-image("../img/icon/icon-prev.svg", $graylv2);
-  }
-}
-#page-next {
-  display: flex;
-  &::after {
-    content: "";
-    width: 20px;
-    height: 20px;
-    @include mask-image("../img/icon/icon-next.svg", $graylv3);
-  }
-  &:hover::after {
-    @include mask-image("../img/icon/icon-next.svg", $graylv4);
-  }
-  &:disabled::after {
-    @include mask-image("../img/icon/icon-next.svg", $graylv2);
-  }
+#page-prev, #page-next {
+  &::after { @include mask-image("../img/icon/icon-prev.svg", $graylv3); }
+  &:hover::after { @include mask-image("../img/icon/icon-prev.svg", $graylv4); }
+  &:disabled::after { @include mask-image("../img/icon/icon-prev.svg", $graylv2); }
 }
