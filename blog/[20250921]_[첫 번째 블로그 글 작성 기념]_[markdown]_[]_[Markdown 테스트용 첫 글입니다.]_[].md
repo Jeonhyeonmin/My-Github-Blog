@@ -55,4 +55,4 @@ HTML:
 <p>Hello, HTML!</p>
 ```
 
-![alt text](image.png)
+![alt text](img/firstPicture.png)
