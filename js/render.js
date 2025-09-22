@@ -361,42 +361,38 @@ function renderBlogList(searchResult = null, currentPage = 1) {
 }
 
 function renderOtherContents(menu) {
-  /*
-    menu에 다른 콘텐츠, 예를 들어 about이나 contect를 클릭했을 때 렌더링 하는 함수
-    */
-  // main 영역에 blog.md를 제외한 다른 파일을 렌더링
   document.getElementById("blog-posts").style.display = "none";
   document.getElementById("contents").style.display = "block";
 
-  // 만약 menu가 string type 이라면 download_url, name을 menu로 설정
   if (typeof menu === "string") {
     menu = {
-      download_url: origin + "menu/" + menu,
-      name: menu.split("/")[menu.split("/").length - 1],
+      download_url: "/menu/" + menu, // origin은 fetch에서 붙일 필요 없음
+      name: menu.split("/").pop(),
     };
   }
-  // console.log(menu)
-  // console.log(menu.download_url)
+
   let menuDownloadUrl;
+
   if (!isLocal && localDataUsing) {
-    menuDownloadUrl =
-      menu.download_url = `${url.origin}/${siteConfig.repositoryName}${menu.download_url}`;
+    // 로컬 환경일 때만 repositoryName 붙이기
+    menuDownloadUrl = `${window.location.origin}/${siteConfig.repositoryName}${menu.download_url}`;
   } else {
+    // 깃허브 페이지에서 바로 접근할 때는 menu.download_url 그대로
     menuDownloadUrl = menu.download_url;
   }
-  try {
-    fetch(menuDownloadUrl)
-      .then((response) => response.text())
-      .then((text) => styleMarkdown("menu", text, undefined))
-      .then(() => {
-        // 렌더링 후에는 URL 변경(query string으로 블로그 포스트 이름 추가)
-        const url = new URL(origin);
-        url.searchParams.set("menu", menu.name);
-        window.history.pushState({}, "", url);
-      });
-  } catch (error) {
-    styleMarkdown("menu", "# Error입니다. 파일명을 확인해주세요.", undefined);
-  }
+
+  fetch(menuDownloadUrl)
+    .then((response) => response.text())
+    .then((text) => styleMarkdown("menu", text, undefined))
+    .then(() => {
+      const url = new URL(window.location.href);
+      url.searchParams.set("menu", menu.name);
+      window.history.pushState({}, "", url);
+    })
+    .catch((error) => {
+      styleMarkdown("menu", "# Error입니다. 파일명을 확인해주세요.", undefined);
+      console.error("fetch error:", error, menuDownloadUrl);
+    });
 }
 
 function renderBlogCategory() {
