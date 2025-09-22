@@ -6,7 +6,7 @@
 
 ## 🕹️ Game Development
 - **Unity**: Gameplay systems, combat mechanics, 3D RPG prototyping  
-- **Unreal Engine**: Exploring next-gen rendering & physics  
+- **Unreal Engine**: Skilled in Level Design and Blueprint scripting  
 - **MMO Systems**: Real-time networking, party/field/chat systems, inventory & quest implementation  
 - **Server Development**: Job Queue, async/sync server logic, performance optimization  
 - **Database & Web**: RDBMS, REST API, ASP.NET Core (Blazor WebAPI), EF Core ORM  
@@ -21,10 +21,10 @@
 
 ---
 
-## 🌐 Networking & Backend
-- **Client-Server Architecture**: Game client integration with backend  
-- **Networking**: Multiplayer systems, real-time communication, server synchronization  
-- **Backend Integration**: API design, database optimization, scalable architecture  
+## 💻 Programming Languages
+- **Python**: Scripting, automation, backend integration  
+- **C#**: Game development (Unity), server-side logic  
+- **C++**: Performance-critical systems, Unreal Engine development  
 
 ---
 
