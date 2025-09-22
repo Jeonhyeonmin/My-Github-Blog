@@ -10,5 +10,5 @@ Stay connected and explore my projects, game dev logs, and professional profiles
 
 ---
 
-> 💡 **Tip** : Have a productive day! 💻";
+> 💡 **Tip** : Have a productive day! 💻"
 
