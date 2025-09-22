@@ -54,68 +54,54 @@ function search(keyword, kinds) {
 }
 
 async function renderMenu() {
-  /* 
-    1. 메인페이지 메뉴 생성 및 메뉴클릭 이벤트 정의
-    2. 검색창과 검색 이벤트 정의(검색이 메뉴에 있으므로) - 함수가 커지면 별도 파일로 분리 필요
-    */
+  /* 메뉴 생성 및 검색창 이벤트 처리 */
   blogMenu.forEach((menu) => {
-    // 메뉴 링크 생성
     const link = document.createElement("a");
 
-    // (static) index.html: <div id="contents" class="mt-6 grid-cols-3"></div>
     link.classList.add(...menuListStyle.split(" "));
     link.classList.add(`${menu.name}`);
 
-    link.href = menu.download_url;
-    // 확장자를 제외하고 이름만 innerText로 사용
+    // 메뉴 이름 표시 (확장자 제외)
     const menuName = menu.name.split(".")[0];
     link.innerText = menuName;
 
-    link.onclick = (event) => {
-      // 메뉴 링크 클릭 시 이벤트 중지 후 menu 내용을 읽어와 contents 영역에 렌더링
+    link.href = menu.download_url;
+
+    link.onclick = async (event) => {
       event.preventDefault();
 
+      // **메인 메뉴 클릭 시 blog.md로 연결**
       if (menu.name === "blog.md") {
         if (blogList.length === 0) {
-          // 블로그 리스트 로딩
-          initDataBlogList().then(() => {
-            renderBlogList();
-          });
-        } else {
-          renderBlogList();
+          await initDataBlogList();
         }
-        const url = new URL(origin);
+        renderBlogList();
+        renderBlogCategory();
+
+        const url = new URL(window.location.href);
         url.searchParams.set("menu", menu.name);
         window.history.pushState({}, "", url);
       } else {
         renderOtherContents(menu);
       }
     };
+
     document.getElementById("menu").appendChild(link);
   });
 
-  // 검색 버튼 클릭 시 검색창 출력
+  // --- 검색창 토글 및 이벤트 ---
   const searchButton = document.getElementById("search-button");
   const searchCont = document.querySelector(".search-cont");
-
   let searchInputShow = false;
 
   window.addEventListener("click", (event) => {
-    // 화면의 크기가 md 보다 작을 때만 동작
     if (window.innerWidth <= 768) {
-      if (event.target == searchButton) {
+      if (event.target === searchButton) {
         searchInputShow = !searchInputShow;
-        if (searchInputShow) {
-          searchButton.classList.add("active");
-          searchCont.classList.remove("hidden");
-          searchCont.classList.add("block");
-        } else {
-          searchButton.classList.remove("active");
-          searchCont.classList.add("hidden");
-          searchInputShow = false;
-        }
-      } else if (event.target == searchCont) {
-      } else {
+        searchButton.classList.toggle("active", searchInputShow);
+        searchCont.classList.toggle("hidden", !searchInputShow);
+        searchCont.classList.toggle("block", searchInputShow);
+      } else if (event.target !== searchCont) {
         searchButton.classList.remove("active");
         searchCont.classList.add("hidden");
         searchInputShow = false;
@@ -123,7 +109,7 @@ async function renderMenu() {
     }
   });
 
-  window.addEventListener("resize", (event) => {
+  window.addEventListener("resize", () => {
     if (window.innerWidth > 768) {
       searchButton.classList.add("active");
       searchCont.classList.remove("hidden");
@@ -131,20 +117,15 @@ async function renderMenu() {
     } else {
       searchButton.classList.remove("active");
       searchCont.classList.add("hidden");
+      searchInputShow = false;
     }
   });
 
   const searchInput = document.getElementById("search-input");
   searchInput.onkeyup = (event) => {
-    if (event.key === "Enter") {
-      // 엔터키 입력 시 검색 실행
-      search();
-    }
+    if (event.key === "Enter") search();
   };
-
-  searchInput.onclick = (event) => {
-    event.stopPropagation();
-  };
+  searchInput.onclick = (event) => event.stopPropagation();
 
   const searchInputButton = document.querySelector(".search-inp-btn");
   searchInputButton.onclick = (event) => {
@@ -154,12 +135,7 @@ async function renderMenu() {
 
   const resetInputButton = document.querySelector(".reset-inp-btn");
   searchInput.addEventListener("input", () => {
-    // 초기화 버튼 보이기
-    if (searchInput.value) {
-      resetInputButton.classList.remove("hidden");
-    } else {
-      resetInputButton.classList.add("hidden");
-    }
+    resetInputButton.classList.toggle("hidden", !searchInput.value);
   });
   resetInputButton.addEventListener("click", (event) => {
     event.stopPropagation();
