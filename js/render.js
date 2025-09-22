@@ -671,3 +671,14 @@ async function initialize() {
 
 
 initialize();
+
+const blogTitle = document.getElementById("blog-title");
+if (blogTitle) {
+  blogTitle.addEventListener("click", (event) => {
+    event.preventDefault();
+    // 항상 blog.md 메뉴로 이동
+    const url = new URL("https://jeonhyeonmin.github.io/blog/");
+    url.searchParams.set("menu", "blog.md");
+    window.location.href = url.toString();
+  });
+}
