@@ -1,6 +1,6 @@
 # 👋 Hi, I'm Hyeonmin
 
-🎮 **Client-Server Game Developer | Creative Designer**
+🎮 **Client-Server Game Developer | Creative Designer | Official Game Influencer at Naver (Korea)**
 
 ---
 
@@ -24,4 +24,4 @@
 ## 💻 Programming Languages
 - **Python**: Scripting, automation, backend integration  
 - **C#**: Game development (Unity), server-side logic  
-- **C++**: Performance-critical systems, Unreal Engine development  
+- **C++**: Performance-critical systems, Unreal Engine development
