@@ -10,16 +10,5 @@ Stay connected and explore my projects, game dev logs, and professional profiles
 
 ---
 
-<p id="greeting"></p>
+💡 Tip: Have a productive day! 💻";
 
-<script>
-  const greetingEl = document.getElementById("greeting");
-  const today = new Date();
-  const day = today.getDay(); // 0 = Sunday, 6 = Saturday
-
-  if (day === 0 || day === 6) {
-    greetingEl.textContent = "💡 Tip: Happy Weekend~ 😊";
-  } else {
-    greetingEl.textContent = "💡 Tip: Have a productive day! 💻";
-  }
-</script>
