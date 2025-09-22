@@ -618,66 +618,80 @@ function renderPagination(totalPage, currentPage, targetList = null) {
 
 async function initialize() {
   /*
-    최초 실행 함수, URLparsing은 이 영역에서 담당하지 않고 index.html에서 로드 될 때 실행, blogList와 blogMenu는 initData.js에서 정의되고 로드될 때 실행. 다만 함수의 흐름을 파악하고자 이곳으로 옮겨올 필요성이 있음
-    
-    TODO: URL 파싱 결과 상세 블로그나 메뉴상태이면 검색 버튼을 누르기 전까지는 initDataBlogList()를 실행시킬 필요 없음. 이를 통해 API 호출 한 번을 아낄 수 있음.
-    */
-  if (!url.search.split("=")[1] || url.search.split("=")[1] === "blog.md") {
-    // 메뉴 로딩
-    await initDataBlogMenu();
-    renderMenu();
+    최초 실행 함수
+    - URL 파싱 결과에 따라 메뉴/블로그/포스트 렌더링 결정
+    - blogList와 blogMenu는 initData.js에서 정의됨
+  */
 
-    // 블로그 리스트 로딩
-    await initDataBlogList();
-    renderBlogList();
+  // 메뉴 로딩
+  await initDataBlogMenu();
+  renderMenu();
 
-    // 블로그 카테고리 로딩
-    renderBlogCategory();
-  } else {
-    // 메뉴 로딩
-    await initDataBlogMenu();
-    renderMenu();
+  // URL query 확인
+  const searchParams = new URLSearchParams(window.location.search);
+  const menuParam = searchParams.get("menu");
+  const postParam = searchParams.get("post");
 
-    // 블로그 상세 정보 로딩
-    if (url.search.split("=")[0] === "?menu") {
-      document.getElementById("blog-posts").style.display = "none";
-      document.getElementById("contents").style.display = "block";
-      try {
-        fetch(origin + "menu/" + url.search.split("=")[1])
-          .then((response) => response.text())
-          .then((text) => styleMarkdown("menu", text))
-          .then(() => {
-            // 렌더링 후에는 URL 변경(query string으로 블로그 포스트 이름 추가)
-            const url = new URL(window.location.href);
-            window.history.pushState({}, "", url);
-          });
-      } catch (error) {
-        styleMarkdown("menu", "# Error입니다. 파일명을 확인해주세요.");
+  if (!menuParam && !postParam) {
+    // query string이 없는 경우: 기본 메뉴(blog.md) 선택
+    const defaultMenu = blogMenu.find(menu => menu.name === "blog.md");
+    if (defaultMenu) {
+      // blogList 초기화
+      await initDataBlogList();
+      renderBlogList();
+
+      // 카테고리 렌더링
+      renderBlogCategory();
+
+      // URL에 ?menu=blog.md 추가 (새로고침 없이)
+      searchParams.set("menu", "blog.md");
+      const newUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+      window.history.replaceState({}, "", newUrl);
+    }
+  } else if (menuParam) {
+    // 메뉴 query가 있는 경우
+    if (menuParam === "blog.md") {
+      await initDataBlogList();
+      renderBlogList();
+      renderBlogCategory();
+    } else {
+      // 다른 메뉴 렌더링
+      renderOtherContents(menuParam);
+    }
+  } else if (postParam) {
+    // 블로그 포스트 상세 view
+    document.getElementById("contents").style.display = "block";
+    document.getElementById("blog-posts").style.display = "none";
+
+    const postNameDecode = decodeURI(postParam).replaceAll("+", " ");
+    const postInfo = extractFileInfo(postNameDecode);
+
+    try {
+      let postDownloadUrl;
+      if (!isLocal && localDataUsing) {
+        postDownloadUrl = `${window.location.origin}/${siteConfig.repositoryName}blog/${postNameDecode}`;
+      } else {
+        postDownloadUrl = `blog/${postNameDecode}`;
       }
-    } else if (url.search.split("=")[0] === "?post") {
-      document.getElementById("contents").style.display = "block";
-      document.getElementById("blog-posts").style.display = "none";
-      postNameDecode = decodeURI(url.search.split("=")[1]).replaceAll("+", " ");
-      // console.log(postNameDecode);
-      postInfo = extractFileInfo(postNameDecode);
-      try {
-        fetch(origin + "blog/" + postNameDecode)
-          .then((response) => response.text())
-          .then((text) =>
-            postInfo.fileType === "md"
-              ? styleMarkdown("post", text, postInfo)
-              : styleJupyter("post", text, postInfo)
-          )
-          .then(() => {
-            // 렌더링 후에는 URL 변경(query string으로 블로그 포스트 이름 추가)
-            const url = new URL(window.location.href);
-            window.history.pushState({}, "", url);
-          });
-      } catch (error) {
-        styleMarkdown("post", "# Error입니다. 파일명을 확인해주세요.");
-      }
+
+      fetch(postDownloadUrl)
+        .then((response) => response.text())
+        .then((text) =>
+          postInfo.fileType === "md"
+            ? styleMarkdown("post", text, postInfo)
+            : styleJupyter("post", text, postInfo)
+        )
+        .then(() => {
+          // URL 갱신
+          const url = new URL(window.location.href);
+          url.searchParams.set("post", postNameDecode);
+          window.history.replaceState({}, "", url);
+        });
+    } catch (error) {
+      styleMarkdown("post", "# Error입니다. 파일명을 확인해주세요.");
     }
   }
 }
+
 
 initialize();
