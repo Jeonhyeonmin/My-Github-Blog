@@ -25,9 +25,3 @@
 - **Python**: Scripting, automation, backend integration  
 - **C#**: Game development (Unity), server-side logic  
 - **C++**: Performance-critical systems, Unreal Engine development  
-
----
-
-## 🚀 Vision
-💡 Always exploring new ways to connect players through games,  
-bridging **gameplay, design, and technology** into seamless experiences.  
