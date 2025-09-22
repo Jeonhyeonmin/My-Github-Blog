@@ -7,7 +7,7 @@
 ## 🕹️ Game Development
 - **Unity**: Gameplay systems, combat mechanics, 3D RPG prototyping  
 - **Unreal Engine**: Skilled in Level Design and Blueprint scripting  
-- **MMO Systems**: Real-time networking, party/field/chat systems, inventory & quest implementation, combat mechanics  
+- **MMO Systems**: Real-time networking, party/field/chat systems, inventory & quest implementation
 - **Server Development**: Job Queue, async/sync server logic, performance optimization  
 - **Database & Web**: RDBMS, REST API, ASP.NET Core (Blazor WebAPI), EF Core ORM  
 
