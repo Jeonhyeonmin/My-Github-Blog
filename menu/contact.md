@@ -12,4 +12,4 @@ Stay connected and explore my projects, game dev logs, and professional profiles
 
 ---
 
-> 💡 **Tip**: Feel free to reach out for collaborations, mentorship, or to discuss exciting game dev ideas!
+> 💡 **Tip**: Happy weekend~😊
