@@ -1,4 +1,4 @@
-# 📬 Contact & Portfolio
+# 📬 Contact
 
 Stay connected and explore my projects, game dev logs, and professional profiles.
 
