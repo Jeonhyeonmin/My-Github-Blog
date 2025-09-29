@@ -1,4 +1,4 @@
-# URP 셰이더 Couldnt open include 오류, 원인은 경로에 있다
+# URP 셰이더 Couldnt open include 오류 원인은 경로에 있다
 
 URP 환경에서 셰이더를 다루다 보면 어김없이 마주치는 오류가 있다.  
 
